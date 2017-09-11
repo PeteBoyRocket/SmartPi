@@ -1,0 +1,65 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartPi", "SmartPi\SmartPi.csproj", "{8C990067-961E-4028-8DE1-A2CCEB91ADA5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartPi.Interface", "SmartPi.Interface\SmartPi.Interface.csproj", "{E3ED8B15-2754-44B2-8F48-245BA5BE2594}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|ARM = Debug|ARM
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|ARM = Release|ARM
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8C990067-961E-4028-8DE1-A2CCEB91ADA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C990067-961E-4028-8DE1-A2CCEB91ADA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C990067-961E-4028-8DE1-A2CCEB91ADA5}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{8C990067-961E-4028-8DE1-A2CCEB91ADA5}.Debug|ARM.Build.0 = Debug|Any CPU
+		{8C990067-961E-4028-8DE1-A2CCEB91ADA5}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{8C990067-961E-4028-8DE1-A2CCEB91ADA5}.Debug|x64.Build.0 = Debug|Any CPU
+		{8C990067-961E-4028-8DE1-A2CCEB91ADA5}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8C990067-961E-4028-8DE1-A2CCEB91ADA5}.Debug|x86.Build.0 = Debug|Any CPU
+		{8C990067-961E-4028-8DE1-A2CCEB91ADA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C990067-961E-4028-8DE1-A2CCEB91ADA5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C990067-961E-4028-8DE1-A2CCEB91ADA5}.Release|ARM.ActiveCfg = Release|Any CPU
+		{8C990067-961E-4028-8DE1-A2CCEB91ADA5}.Release|ARM.Build.0 = Release|Any CPU
+		{8C990067-961E-4028-8DE1-A2CCEB91ADA5}.Release|x64.ActiveCfg = Release|Any CPU
+		{8C990067-961E-4028-8DE1-A2CCEB91ADA5}.Release|x64.Build.0 = Release|Any CPU
+		{8C990067-961E-4028-8DE1-A2CCEB91ADA5}.Release|x86.ActiveCfg = Release|Any CPU
+		{8C990067-961E-4028-8DE1-A2CCEB91ADA5}.Release|x86.Build.0 = Release|Any CPU
+		{E3ED8B15-2754-44B2-8F48-245BA5BE2594}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{E3ED8B15-2754-44B2-8F48-245BA5BE2594}.Debug|ARM.ActiveCfg = Debug|ARM
+		{E3ED8B15-2754-44B2-8F48-245BA5BE2594}.Debug|ARM.Build.0 = Debug|ARM
+		{E3ED8B15-2754-44B2-8F48-245BA5BE2594}.Debug|ARM.Deploy.0 = Debug|ARM
+		{E3ED8B15-2754-44B2-8F48-245BA5BE2594}.Debug|x64.ActiveCfg = Debug|x64
+		{E3ED8B15-2754-44B2-8F48-245BA5BE2594}.Debug|x64.Build.0 = Debug|x64
+		{E3ED8B15-2754-44B2-8F48-245BA5BE2594}.Debug|x64.Deploy.0 = Debug|x64
+		{E3ED8B15-2754-44B2-8F48-245BA5BE2594}.Debug|x86.ActiveCfg = Debug|x86
+		{E3ED8B15-2754-44B2-8F48-245BA5BE2594}.Debug|x86.Build.0 = Debug|x86
+		{E3ED8B15-2754-44B2-8F48-245BA5BE2594}.Debug|x86.Deploy.0 = Debug|x86
+		{E3ED8B15-2754-44B2-8F48-245BA5BE2594}.Release|Any CPU.ActiveCfg = Release|x86
+		{E3ED8B15-2754-44B2-8F48-245BA5BE2594}.Release|ARM.ActiveCfg = Release|ARM
+		{E3ED8B15-2754-44B2-8F48-245BA5BE2594}.Release|ARM.Build.0 = Release|ARM
+		{E3ED8B15-2754-44B2-8F48-245BA5BE2594}.Release|ARM.Deploy.0 = Release|ARM
+		{E3ED8B15-2754-44B2-8F48-245BA5BE2594}.Release|x64.ActiveCfg = Release|x64
+		{E3ED8B15-2754-44B2-8F48-245BA5BE2594}.Release|x64.Build.0 = Release|x64
+		{E3ED8B15-2754-44B2-8F48-245BA5BE2594}.Release|x64.Deploy.0 = Release|x64
+		{E3ED8B15-2754-44B2-8F48-245BA5BE2594}.Release|x86.ActiveCfg = Release|x86
+		{E3ED8B15-2754-44B2-8F48-245BA5BE2594}.Release|x86.Build.0 = Release|x86
+		{E3ED8B15-2754-44B2-8F48-245BA5BE2594}.Release|x86.Deploy.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {740F7EE9-C89C-45EE-8F52-CA0306879DBD}
+	EndGlobalSection
+EndGlobal
