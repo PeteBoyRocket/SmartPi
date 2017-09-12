@@ -1,20 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net.Http;
-using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.Security.Authentication.Web;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -26,16 +17,48 @@ namespace SmartPi.Interface
     public sealed partial class MainPage : Page
     {
         // DON't CHECK THIS IN!!!
-        private string clientSecret = "";
+        private const string clientSecret = "";
+        private const string tokenPath = "token";
+        private Uri endpointUri = new Uri("https://graph.api.smartthings.com/api/smartapps/endpoints");
 
         public MainPage()
         {
             this.InitializeComponent();
 
-            this.AuthenticateAsync();
+            LoadAsync();
         }
 
-        private async System.Threading.Tasks.Task AuthenticateAsync()
+        private async Task LoadAsync()
+        {
+            var token = LoadToken();
+
+            if (token == null)
+            {
+                await this.AuthenticateAsync();
+
+                token = LoadToken();
+            }
+
+            var endpoints = await this.GetEndpointsAsync(token);
+        }
+
+        private TokenResponse LoadToken()
+        {
+            try
+            {
+                var token = File.ReadAllText(tokenPath);
+
+                var tokenResponse = JsonConvert.DeserializeObject<TokenResponse>(token);
+
+                return tokenResponse;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        private async Task AuthenticateAsync()
         {
             var authorisationUri = new Uri("https://graph.api.smartthings.com/oauth/authorize?response_type=code&client_id=bef68ad8-8056-4c74-bde1-cc12081c5db3&scope=app");
 
@@ -52,20 +75,33 @@ namespace SmartPi.Interface
 
                 var tokenUri = new Uri($"https://graph.api.smartthings.com/oauth/token?grant_type=authorization_code&code={code}&client_id=bef68ad8-8056-4c74-bde1-cc12081c5db3&client_secret={clientSecret}");
 
-                using (var httpClient = new HttpClient())
+                var response = await this.DoAGet(tokenUri);
+                File.WriteAllText(tokenPath, response);
+            }
+        }
+
+        private async Task<string> DoAGet(Uri uri)
+        {
+            using (var httpClient = new HttpClient())
+            {
+                var tokenResult = await httpClient.GetAsync(uri);
+                if (tokenResult.StatusCode == System.Net.HttpStatusCode.OK)
                 {
-                    var tokenResult = await httpClient.GetAsync(tokenUri);
-                    if (tokenResult.StatusCode == System.Net.HttpStatusCode.OK)
-                    {
-                       var response = await tokenResult.Content.ReadAsStringAsync();
-
-                        var tokenResponse = JsonConvert.DeserializeObject<TokenResponse>(response);
-                    }
-
-                    //  var resultx = await WebAuthenticationBroker.AuthenticateAsync(WebAuthenticationOptions.None, tokenUri, redirectUri);
-
+                    var response = await tokenResult.Content.ReadAsStringAsync();
+                    return response;
                 }
             }
+
+            return string.Empty;
+        }
+
+        private async Task<IEnumerable<SmartApp>> GetEndpointsAsync(TokenResponse token)
+        {
+            var response = await this.DoAGet(endpointUri);
+
+            var smartApps = JsonConvert.DeserializeObject<IEnumerable<SmartApp>>(response);
+
+            return smartApps;
         }
     }
 }
