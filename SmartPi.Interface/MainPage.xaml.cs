@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Newtonsoft.Json;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Security.Authentication.Web;
@@ -56,7 +57,9 @@ namespace SmartPi.Interface
                     var tokenResult = await httpClient.GetAsync(tokenUri);
                     if (tokenResult.StatusCode == System.Net.HttpStatusCode.OK)
                     {
-                       var xx = await tokenResult.Content.ReadAsStringAsync();
+                       var response = await tokenResult.Content.ReadAsStringAsync();
+
+                        var tokenResponse = JsonConvert.DeserializeObject<TokenResponse>(response);
                     }
 
                     //  var resultx = await WebAuthenticationBroker.AuthenticateAsync(WebAuthenticationOptions.None, tokenUri, redirectUri);
