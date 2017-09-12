@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Windows.Security.Authentication.Web;
@@ -30,25 +30,28 @@ namespace SmartPi.Interface
 
         private async Task LoadAsync()
         {
-            var token = LoadToken();
+            var token = await LoadTokenAsync();
 
             if (token == null)
             {
                 await this.AuthenticateAsync();
 
-                token = LoadToken();
+                token = await LoadTokenAsync();
             }
 
             var endpoints = await this.GetEndpointsAsync(token);
         }
 
-        private TokenResponse LoadToken()
+        private async Task<TokenResponse> LoadTokenAsync()
         {
             try
             {
-                var token = File.ReadAllText(tokenPath);
+                var storageFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
+                var sampleFile = await storageFolder.GetFileAsync(tokenPath);
 
-                var tokenResponse = JsonConvert.DeserializeObject<TokenResponse>(token);
+                var text = await Windows.Storage.FileIO.ReadTextAsync(sampleFile);
+
+                var tokenResponse = JsonConvert.DeserializeObject<TokenResponse>(text);
 
                 return tokenResponse;
             }
@@ -76,14 +79,29 @@ namespace SmartPi.Interface
                 var tokenUri = new Uri($"https://graph.api.smartthings.com/oauth/token?grant_type=authorization_code&code={code}&client_id=bef68ad8-8056-4c74-bde1-cc12081c5db3&client_secret={clientSecret}");
 
                 var response = await this.DoAGet(tokenUri);
-                File.WriteAllText(tokenPath, response);
+
+                try
+                {
+                    var storageFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
+                    var file = await storageFolder.CreateFileAsync(tokenPath, Windows.Storage.CreationCollisionOption.ReplaceExisting);
+
+                    await Windows.Storage.FileIO.WriteTextAsync(file, response);
+                }
+                catch (Exception ex)
+                {
+                }
             }
         }
 
-        private async Task<string> DoAGet(Uri uri)
+        private async Task<string> DoAGet(Uri uri, string token = null)
         {
             using (var httpClient = new HttpClient())
             {
+                if (!string.IsNullOrWhiteSpace(token))
+                {
+                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                }
+
                 var tokenResult = await httpClient.GetAsync(uri);
                 if (tokenResult.StatusCode == System.Net.HttpStatusCode.OK)
                 {
@@ -97,11 +115,18 @@ namespace SmartPi.Interface
 
         private async Task<IEnumerable<SmartApp>> GetEndpointsAsync(TokenResponse token)
         {
-            var response = await this.DoAGet(endpointUri);
+            var response = await this.DoAGet(endpointUri, token.AccessToken);
 
-            var smartApps = JsonConvert.DeserializeObject<IEnumerable<SmartApp>>(response);
+            try
+            {
+                var smartApps = JsonConvert.DeserializeObject<IEnumerable<SmartApp>>(response);
+                return smartApps;
+            }
+            catch (Exception ex)
+            {
+            }
 
-            return smartApps;
+            return null;
         }
     }
 }

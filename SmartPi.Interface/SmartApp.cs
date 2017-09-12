@@ -5,10 +5,13 @@ namespace SmartPi.Interface
     internal class SmartApp
     {
         [JsonProperty("oauthClient")]
-        public string OAuthClient { get; set; }
+        public OAuthClient OAuthClient { get; set; }
 
         [JsonProperty("location")]
-        public string Location { get; set; }
+        public Location Location { get; set; }
+
+        [JsonProperty("uri")]
+        public string Uri { get; set; }
 
         [JsonProperty("base_url")]
         public string BaseUrl { get; set; }
